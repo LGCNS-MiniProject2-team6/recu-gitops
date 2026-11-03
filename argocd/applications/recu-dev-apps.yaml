@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: recu-dev-apps
+  namespace: argocd
+  labels:
+    app.kubernetes.io/part-of: recu
+    app.kubernetes.io/component: gitops
+    environment: dev
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/LGCNS-MiniProject2-team6/recu-gitops.git
+    targetRevision: main
+    path: overlays/dev-apps
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: recu-dev
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: false
+    syncOptions:
+      - ApplyOutOfSyncOnly=true
