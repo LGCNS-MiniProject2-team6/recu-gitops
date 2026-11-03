@@ -10,7 +10,7 @@
         "containers": [
           {
             "name": "app",
-            "image": "docker.io/junwooqkr5302/recu-userservice:bca65cf5b1f120c49b95edff4ff44d61aac36942"
+            "image": "docker.io/junwooqkr5302/recu-userservice:2ea6fcda94d4f858c914e83852436130a5fba4b0"
           }
         ]
       }
