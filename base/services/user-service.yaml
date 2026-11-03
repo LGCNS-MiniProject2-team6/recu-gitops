@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-service
+  labels:
+    app.kubernetes.io/name: user-service
+    app.kubernetes.io/component: service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: user-service
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: user-service
+        app.kubernetes.io/component: service
+    spec:
+      nodeSelector:
+        workload: service
+      containers:
+        - name: app
+          image: junwooqkr5302/recu-userservice:9075f1b
+          ports:
+            - name: http
+              containerPort: 8082
+          envFrom:
+            - configMapRef:
+                name: platform-runtime
+            - configMapRef:
+                name: bus-runtime
+            - configMapRef:
+                name: db-runtime
+          env:
+            - name: SERVER_PORT
+              value: "8082"
+            - name: CONFIG_USER
+              valueFrom:
+                secretKeyRef:
+                  name: config-client-secrets
+                  key: CONFIG_USER
+            - name: CONFIG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: config-client-secrets
+                  key: CONFIG_PASSWORD
+            - name: DB_URL
+              value: $(USER_DB_URL)
+            - name: DB_USER
+              value: $(USER_DB_USER)
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mariadb-secret
+                  key: USER_DB_PASSWORD
+          startupProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: http
+            failureThreshold: 36
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: http
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: http
+            initialDelaySeconds: 45
+            periodSeconds: 15
+          resources:
+            requests:
+              cpu: 250m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-service
+spec:
+  selector:
+    app.kubernetes.io/name: user-service
+  ports:
+    - name: http
+      port: 8082
+      targetPort: http

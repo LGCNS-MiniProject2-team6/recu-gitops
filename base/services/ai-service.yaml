@@ -1,0 +1,92 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-service
+  labels:
+    app.kubernetes.io/name: ai-service
+    app.kubernetes.io/component: service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ai-service
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ai-service
+        app.kubernetes.io/component: service
+    spec:
+      nodeSelector:
+        workload: service
+      containers:
+        - name: app
+          image: junwooqkr5302/recu-aiservice:9075f1b
+          ports:
+            - name: http
+              containerPort: 8083
+          envFrom:
+            - configMapRef:
+                name: platform-runtime
+            - configMapRef:
+                name: bus-runtime
+            - configMapRef:
+                name: db-runtime
+          env:
+            - name: SERVER_PORT
+              value: "8083"
+            - name: CONFIG_USER
+              valueFrom:
+                secretKeyRef:
+                  name: config-client-secrets
+                  key: CONFIG_USER
+            - name: CONFIG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: config-client-secrets
+                  key: CONFIG_PASSWORD
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mariadb-secret
+                  key: AI_DB_PASSWORD
+            - name: GEMINI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ai-secrets
+                  key: GEMINI_API_KEY
+          startupProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: http
+            failureThreshold: 36
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: http
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: http
+            initialDelaySeconds: 45
+            periodSeconds: 15
+          resources:
+            requests:
+              cpu: 250m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ai-service
+spec:
+  selector:
+    app.kubernetes.io/name: ai-service
+  ports:
+    - name: http
+      port: 8083
+      targetPort: http

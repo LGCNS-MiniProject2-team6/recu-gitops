@@ -1,0 +1,47 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: recu-dev
+resources:
+  - ../../base
+configMapGenerator:
+  - name: db-runtime
+    literals:
+      - USER_DB_URL=jdbc:mariadb://mariadb.recu-dev.svc.cluster.local:3306/user_service
+      - USER_DB_USER=user_service
+      - DB_URL=jdbc:mariadb://mariadb.recu-dev.svc.cluster.local:3306/ai_service
+      - DB_USER=ai_service
+      - BLOG_DB_URL=jdbc:mariadb://mariadb.recu-dev.svc.cluster.local:3306/blog_service
+      - BLOG_DB_USER=blog_service
+  - name: bus-runtime
+    literals:
+      - BUS_ENABLED=true
+      - BUS_DESTINATION=recu-config-bus-dev
+      - KAFKA_BOOTSTRAP_SERVERS=kafka.recu-dev.svc.cluster.local:9092
+      - KAFKA_SECURITY_PROTOCOL=PLAINTEXT
+  - name: platform-runtime
+    literals:
+      - SPRING_PROFILES_ACTIVE=dev
+      - EUREKA_URL=http://discovery-server:8761/eureka/
+      - CONFIG_SERVER_URL=http://config-server:8888
+      - CONFIG_GIT_URI=https://github.com/LGCNS-MiniProject2-team6/recu-config.git
+      - CONFIG_GIT_LABEL=main
+      - FRONTEND_ORIGIN=https://replace-with-dev-frontend-origin.invalid
+patches:
+  - path: images/discovery-server.json
+  - path: images/config-server.json
+  - path: images/api-gateway.json
+  - path: images/user-service.json
+  - path: images/ai-service.json
+  - path: images/blog-service.json
+  - target:
+      kind: Deployment
+    patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: ignored-by-target-selector
+      spec:
+        template:
+          spec:
+            nodeSelector:
+              environment: dev
