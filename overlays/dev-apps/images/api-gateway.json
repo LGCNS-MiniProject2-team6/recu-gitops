@@ -1,12 +1,17 @@
 {
   "apiVersion": "apps/v1",
   "kind": "Deployment",
-  "metadata": { "name": "api-gateway" },
+  "metadata": {
+    "name": "api-gateway"
+  },
   "spec": {
     "template": {
       "spec": {
         "containers": [
-          { "name": "app", "image": "junwooqkr5302/recu-apigateway:9075f1b" }
+          {
+            "name": "app",
+            "image": "docker.io/junwooqkr5302/recu-apigateway:bca65cf5b1f120c49b95edff4ff44d61aac36942"
+          }
         ]
       }
     }
