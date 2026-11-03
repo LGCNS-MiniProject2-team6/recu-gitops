@@ -12,7 +12,8 @@
 
 ```bash
 kubectl apply -k argocd/install
+kubectl apply -k argocd/projects
 kubectl apply -k argocd/applications
 ```
 
-`argocd/applications`는 Argo CD CRD가 먼저 설치된 뒤 적용해야 한다.
+`argocd/projects`와 `argocd/applications`는 Argo CD CRD가 먼저 설치된 뒤 적용해야 한다.
