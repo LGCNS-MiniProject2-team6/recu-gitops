@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: recu
+  namespace: argocd
+spec:
+  description: Recu 애플리케이션의 dev/prod GitOps 배포 프로젝트
+  sourceRepos:
+    - https://github.com/LGCNS-MiniProject2-team6/recu-gitops.git
+  destinations:
+    - namespace: recu-dev
+      server: https://kubernetes.default.svc
+    - namespace: recu-prod
+      server: https://kubernetes.default.svc
+  namespaceResourceWhitelist:
+    - group: ""
+      kind: ConfigMap
+    - group: ""
+      kind: Service
+    - group: apps
+      kind: Deployment

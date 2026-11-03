@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/component: gitops
     environment: dev
 spec:
-  project: default
+  project: recu
   source:
     repoURL: https://github.com/LGCNS-MiniProject2-team6/recu-gitops.git
     targetRevision: main
