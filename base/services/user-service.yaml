@@ -53,6 +53,11 @@ spec:
                 secretKeyRef:
                   name: mariadb-secret
                   key: USER_DB_PASSWORD
+            - name: INTERNAL_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: internal-api-secrets
+                  key: INTERNAL_API_TOKEN
           startupProbe:
             httpGet:
               path: /actuator/health/liveness
