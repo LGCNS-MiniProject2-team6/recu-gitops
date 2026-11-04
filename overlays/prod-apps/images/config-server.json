@@ -6,7 +6,7 @@
     "template": {
       "spec": {
         "containers": [
-          { "name": "app", "image": "junwooqkr5302/recu-configserver:9075f1b" }
+          { "name": "app", "image": "docker.io/junwooqkr5302/recu-configserver:bca65cf5b1f120c49b95edff4ff44d61aac36942" }
         ]
       }
     }
