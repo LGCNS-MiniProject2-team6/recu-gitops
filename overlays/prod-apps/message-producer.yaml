@@ -1,0 +1,48 @@
+# 가상의 외부 블로그 수집 서버(messageProducer). 수집 API를 Gateway로 호출한다. Kafka에는 직접 붙지 않는다.
+# 관리 화면(9090)은 인증이 없어 Pod 안 127.0.0.1에만 열린다 → Service 없이 kubectl port-forward로만 접근.
+# 이미지는 GHCR 비공개 → ghcr-pull Secret으로 pull. 수집 키는 blog-service와 같은 blog-collect-secrets.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: message-producer
+  labels:
+    app.kubernetes.io/name: message-producer
+    app.kubernetes.io/component: demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: message-producer
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: message-producer
+        app.kubernetes.io/component: demo
+    spec:
+      nodeSelector:
+        workload: service
+      imagePullSecrets:
+        - name: ghcr-pull
+      containers:
+        - name: app
+          image: ghcr.io/lgcns-miniproject2-team6/recu-message-producer:954a54f134ea3feb10719efe2be3b9519930a079
+          env:
+            - name: GATEWAY_URL
+              value: http://api-gateway:8080
+            - name: BLOG_COLLECT_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: blog-collect-secrets
+                  key: BLOG_COLLECT_API_KEY
+          securityContext:
+            # 이미지는 USER app(이름)이라 kubelet이 비루트를 검증하지 못한다 → Dockerfile의 uid를 명시.
+            runAsUser: 10001
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+          resources:
+            requests:
+              cpu: 50m
+              memory: 192Mi
+            limits:
+              cpu: 500m
+              memory: 384Mi
