@@ -54,6 +54,14 @@ spec:
                 secretKeyRef:
                   name: internal-api-secrets
                   key: INTERNAL_API_TOKEN
+            # 수집 API(X-Collect-Key) 인증 키. messageProducer와 같은 Secret을 쓴다.
+            # Secret이 없는 환경(prod 미생성)에서도 기동되도록 optional. 없으면 수집 API는 모두 거부된다.
+            - name: BLOG_COLLECT_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: blog-collect-secrets
+                  key: BLOG_COLLECT_API_KEY
+                  optional: true
           startupProbe:
             httpGet:
               path: /actuator/health/liveness
