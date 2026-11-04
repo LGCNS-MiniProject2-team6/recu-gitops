@@ -3,6 +3,8 @@ kind: Kustomization
 namespace: recu-prod
 resources:
   - ../../base
+  - frontend.yaml
+  - message-producer.yaml
 configMapGenerator:
   - name: db-runtime
     literals:
