@@ -226,12 +226,12 @@ PR에는 대상 환경·서비스, tag/digest·소스 SHA·CI 링크, 검증 결
 
 | 작업 영역 | 담당자 | 담당 내용 |
 | --- | --- | --- |
-| DevOps 역할2 | [@Unpart](https://github.com/Unpart) | K3s·노드·Namespace·Secret·앱 배포, 앱 전용 overlay, Argo CD 설치·AppProject·Application·동기화, 외부 도메인·Ingress·TLS |
-| DevOps 역할4 | [@junwoo-qkr](https://github.com/junwoo-qkr) | backend 이미지 CI·서비스별 GitOps PR, 이미지·digest·소스 추적·승격·롤백 PR 지원 |
-| DevOps 역할3 | [@HYH0804](https://github.com/HYH0804) | MariaDB·Kafka·PVC·토픽·관측 구성, dev frontend·시연 수집기 배포·UID·메모리 후속 조정 |
-| 플랫폼·Gateway 연동 | [@yhi9839](https://github.com/yhi9839) · [@pdpdpdjjj23](https://github.com/pdpdpdjjj23) | 각각 Config·Eureka·Gateway 라우팅과 Gateway JWT·사용자 ID 전달 계약 |
-| 업무 서비스 연동 | [@woomoo3](https://github.com/woomoo3) · [@pdpdpdjjj23](https://github.com/pdpdpdjjj23) · [@Kimoojin](https://github.com/Kimoojin) | 각각 User·AI·Blog 내부 API 호환성·배포 후 기능 확인 |
-| Frontend 화면·이미지 연동 | [@yhi9839](https://github.com/yhi9839) · [@HYH0804](https://github.com/HYH0804) | 각각 브라우저·OAuth 콜백·화면 연동과 nginx·정적 이미지·GHCR CI |
+| K3s·GitOps 배포 | [문한일(@Unpart)](https://github.com/Unpart) | K3s·노드·Namespace·Secret·앱 배포, 앱 전용 overlay, Argo CD 설치·AppProject·Application·동기화, 외부 도메인·Ingress·TLS |
+| CI/CD·이미지 자동화 | [박준우(@junwoo-qkr)](https://github.com/junwoo-qkr) | backend 이미지 CI·서비스별 GitOps PR, 이미지·digest·소스 추적·승격·롤백 PR 지원 |
+| DB·Kafka·모니터링 | [현준혁(@HYH0804)](https://github.com/HYH0804) | MariaDB·Kafka·PVC·토픽·관측 구성, dev frontend·시연 수집기 배포·UID·메모리 후속 조정 |
+| 플랫폼·Gateway 연동 | [윤현일(@yhi9839)](https://github.com/yhi9839) · [박재후(@pdpdpdjjj23)](https://github.com/pdpdpdjjj23) | 각각 Config·Eureka·Gateway 라우팅과 Gateway JWT·사용자 ID 전달 계약 |
+| 업무 서비스 연동 | [한예림(@woomoo3)](https://github.com/woomoo3) · [박재후(@pdpdpdjjj23)](https://github.com/pdpdpdjjj23) · [김우진(@Kimoojin)](https://github.com/Kimoojin) | 각각 User·AI·Blog 내부 API 호환성·배포 후 기능 확인 |
+| Frontend 화면·이미지 연동 | [윤현일(@yhi9839)](https://github.com/yhi9839) · [현준혁(@HYH0804)](https://github.com/HYH0804) | 각각 브라우저·OAuth 콜백·화면 연동과 nginx·정적 이미지·GHCR CI |
 
 담당 계정은 recu-gitops와 연동 저장소의 병합 PR·커밋 이력 기준입니다. 배포 선언 직접 변경과 서비스·화면 연동 역할을 구분합니다.
 
