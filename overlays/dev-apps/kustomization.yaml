@@ -4,6 +4,7 @@ namespace: recu-dev
 resources:
   - ../../base
   - frontend.yaml
+  - message-producer.yaml
 configMapGenerator:
   - name: db-runtime
     literals:
