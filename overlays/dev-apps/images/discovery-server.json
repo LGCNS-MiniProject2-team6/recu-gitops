@@ -10,7 +10,7 @@
         "containers": [
           {
             "name": "app",
-            "image": "docker.io/junwooqkr5302/recu-discoveryserver:bca65cf5b1f120c49b95edff4ff44d61aac36942"
+            "image": "docker.io/junwooqkr5302/recu-discoveryserver:2034ea41b67d55e848a3ffa7c528c791c22ad2af"
           }
         ]
       }
