@@ -35,6 +35,8 @@ spec:
                   name: blog-collect-secrets
                   key: BLOG_COLLECT_API_KEY
           securityContext:
+            # 이미지는 USER app(이름)이라 kubelet이 비루트를 검증하지 못한다 → Dockerfile의 uid를 명시.
+            runAsUser: 10001
             runAsNonRoot: true
             allowPrivilegeEscalation: false
           resources:
