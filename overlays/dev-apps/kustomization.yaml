@@ -27,7 +27,7 @@ configMapGenerator:
       - CONFIG_SERVER_URL=http://config-server:8888
       - CONFIG_GIT_URI=https://github.com/LGCNS-MiniProject2-team6/recu-config.git
       - CONFIG_GIT_LABEL=main
-      - FRONTEND_ORIGIN=https://replace-with-dev-frontend-origin.invalid
+      - FRONTEND_ORIGIN=https://cookies-essentials-chances-started.trycloudflare.com
 patches:
   - path: images/discovery-server.json
   - path: images/config-server.json
