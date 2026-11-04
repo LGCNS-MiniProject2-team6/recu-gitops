@@ -1,0 +1,66 @@
+# 프론트(nginx 정적 서빙 + /api/ → api-gateway 프록시). frontend 저장소 Dockerfile 참고.
+# 이미지는 GHCR 비공개 → recu-dev의 ghcr-pull Secret(docker-registry)으로 pull한다. Secret은 Git에 두지 않는다.
+# prod 공개 방식이 정해지기 전까지 dev overlay에만 둔다.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  labels:
+    app.kubernetes.io/name: frontend
+    app.kubernetes.io/component: web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: frontend
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: frontend
+        app.kubernetes.io/component: web
+    spec:
+      nodeSelector:
+        workload: service
+      imagePullSecrets:
+        - name: ghcr-pull
+      containers:
+        - name: app
+          image: ghcr.io/lgcns-miniproject2-team6/recu-frontend:bf1749e8c1e7cd581faf069ebce20ab0fb6fc848
+          ports:
+            - name: http
+              containerPort: 8080
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  labels:
+    app.kubernetes.io/name: frontend
+spec:
+  selector:
+    app.kubernetes.io/name: frontend
+  ports:
+    - name: http
+      port: 8080
+      targetPort: http

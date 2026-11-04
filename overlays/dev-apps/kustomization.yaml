@@ -3,6 +3,7 @@ kind: Kustomization
 namespace: recu-dev
 resources:
   - ../../base
+  - frontend.yaml
 configMapGenerator:
   - name: db-runtime
     literals:
